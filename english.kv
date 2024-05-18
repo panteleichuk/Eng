@@ -1,0 +1,266 @@
+#: import data_btn fun.data_btn
+#: import Factory kivy.factory.Factory 
+#: set dark_yellow (1, 0.78, 0, 1)
+#: set blue (0.06, 0.03, 0.27, 1)
+#: set dark_blue (0.07, 0.03, 0.45, 1)
+#: set yellow (1, 0.87, 0.45, 1)
+#: set purple (0.48, 0.44, 0.84, 1)
+
+<MyPopup>:
+    canvas.before:
+        Color:
+            rgba:blue
+        Rectangle:
+            pos:self.pos
+            size:self.size
+    size_hint:0.4,0.4
+    title_align:"center"
+    title_size:dp(18)
+    title_color:dark_yellow
+    separator_color: purple
+    My_L:
+        halign:"center"
+        text:root.Masage
+        color:dark_yellow
+        text_size: root.width, None
+        size: self.texture_size
+       
+<My_TextInput@TextInput>:
+    background_color:dark_yellow
+    foreground_color:dark_blue
+    font_name:"font/Lobster.ttf"
+    font_size:sp(24)
+
+<My_L@Label>:
+    font_name:"font/Lobster.ttf"
+    color:dark_blue
+    font_size:dp(35)
+    
+
+<MainButon@Button>:
+    color:dark_blue
+    font_name: "font/Lobster.ttf"
+    font_size: sp(60)
+    background_color: (0,0,0,0)
+<BackButton@MainButon>:
+    text:"<---"
+    size_hint:(0.3,0.1)
+    pos_hint:{"x":0,"top":1}
+<ScreenManager>:
+    canvas:
+        Color:
+            rgba:yellow
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+<Choise>:
+    on_enter:root.score = app.mark
+    FloatLayout:
+        BackButton:
+            on_press:root.manager.current = "auth"
+            on_press:root.manager.transition.direction = "down"       
+        Image:
+            source:"image/avatar.png"   
+            pos_hint:{"center_x":0.5,"center_y":0.65}
+            size_hint:0.5,0.5
+        MainButon:
+            text:"Test"
+            on_press:root.manager.current = "test"
+            on_press:root.manager.transition.direction = "up"
+            size_hint:(0.5,0.5)
+            pos_hint:{"center_x":0.2,"center_y":0.65}
+
+        MainButon:
+            text:"Learn"
+            on_press:root.manager.current = "learn"
+            on_press:root.manager.transition.direction = "down" 
+            size_hint:(0.5,0.5)
+            pos_hint:{"center_x":0.8,"center_y":0.65}
+        My_L:
+            text:"Ваш рейтинг:"
+            pos_hint:{"center_x":0.5,"center_y":0.5}
+            size_hint:root.size
+        My_L:
+            id:mark
+            color:yellow
+            text:"0"
+            pos_hint:{"center_x":0.5,"center_y":0.3}
+            size_hint:(0.3,0.1)
+            canvas.before:
+                Color:
+                    rgba:dark_blue
+                Ellipse:
+                    pos:self.pos
+                    size:self.size
+<Auth>:
+    FloatLayout:
+        Image:
+            source:"image/icon.jpg"
+            pos_hint:{"center_x":0.5,"y":0.25}
+        My_L:
+            text:"Введіть ім'я"
+            pos_hint:{"center_x":0.5,"y":0}
+        My_TextInput:
+            id:inp_name
+            multiline:False
+            size_hint:(0.7,0.05)
+            pos_hint:{"center_x":0.5,"y":0.4}
+        My_L:
+            text:"Введіть пароль"
+            pos_hint:{"center_x":0.5,"y":-0.2}
+        My_TextInput:
+            id:inp_pasw
+            multiline:False
+            password:True    
+            size_hint:(0.7,0.05)
+            pos_hint:{"center_x":0.5,"y":0.2} 
+        MainButon:
+            text:"Далі"
+            on_press:root.check_pas()
+            size_hint:(0.5,0.2)
+            pos_hint:{"center_x":0.5,"y":0} 
+
+<CustomDropDown@DropDown>:
+   
+    canvas:
+        Color:
+            rgba:yellow
+        Rectangle:
+            size:self.size
+            pos:self.pos
+    MainButon:
+        text: 'Animal'
+        size_hint_y: None
+        height: 44
+        on_release: app.data_key = "animal"
+        font_size:dp(35)
+    MainButon:
+        text: 'School'
+        size_hint_y: None
+        height: 44
+        on_release: app.data_key = "school"
+        font_size:dp(35)
+    MainButon:
+        text: 'Car'
+        size_hint_y: None
+        height: 44
+        on_release: app.data_key = "car"
+        font_size:dp(35)
+    MainButon:
+        text: 'Item'
+        size_hint_y: None
+        height: 44
+        on_release: app.data_key = "items"
+        font_size:dp(35)
+<LearnBtn@Button>:
+    num:1
+    word: data_btn[app.data_key][self.num][2]
+    word_ua: data_btn[app.data_key][self.num][3]
+    audio: data_btn[app.data_key][self.num][1]
+    background_normal: data_btn[app.data_key][self.num][0]
+    background_down: data_btn[app.data_key][self.num][0]
+
+<Learn>:
+    FloatLayout:
+        BackButton:
+            on_press:root.manager.current = "choice"
+            on_press:root.manager.transition.direction = "up"
+        MainButon:
+            text:"..."
+            pos_hint:{"right":1,"top":1}
+            size_hint:(0.4,0.1)
+            on_press:Factory.CustomDropDown().open(self)
+        GridLayout:
+            size_hint:(1,0.9)
+            cols:3
+            rows:3
+            LearnBtn:
+                num:1
+                on_press:root.say(self)
+            LearnBtn:
+                num:2
+                on_press:root.say(self)
+            LearnBtn:
+                num:3
+                on_press:root.say(self)            
+            LearnBtn:
+                num:4
+                on_press:root.say(self)
+            My_L:
+                text:root.word
+            LearnBtn:
+                num:5
+                on_press:root.say(self)
+            LearnBtn:
+                num:6
+                on_press:root.say(self)
+            LearnBtn:
+                num:7
+                on_press:root.say(self)            
+            LearnBtn:
+                num:8
+                on_press:root.say(self)
+
+<Test>:
+    on_enter:root.markk = app.mark
+    on_pre_leave:app.mark = root.markk    
+    FloatLayout:
+        BackButton:
+            on_press:root.manager.current = "choice"
+            on_press:root.manager.transition.direction = "up"
+        My_L:
+            text:str(root.markk)
+            pos_hint:{"center_x":0.5,"y":0.45}
+        MainButon:
+            text:"..."
+            pos_hint:{"right":1,"top":1}
+            size_hint:(0.4,0.1)
+            on_press:Factory.CustomDropDown().open(self) 
+        GridLayout:
+            size_hint:(1,0.9)
+            cols:3
+            rows:3
+            LearnBtn:
+                num:1
+                on_press:root.say(self)
+            LearnBtn:
+                num:2
+                on_press:root.say(self)
+            LearnBtn:
+                num:3
+                on_press:root.say(self)            
+            LearnBtn:
+                num:4
+                on_press:root.say(self)
+            BoxLayout:
+                orientation:"vertical"
+                My_TextInput:
+                    id:en
+                    multiline:False
+                    text_hint:"Введи слово на англ"
+                My_TextInput:
+                    id:ua
+                    multiline:False
+                    text_hint:"Введи слово на Укр"
+                MainButon:
+                    text:"Перевірити"
+                    on_press:root.check()
+                    font_size:dp(25)
+            LearnBtn:
+                num:5
+                on_press:root.say(self)
+            LearnBtn:
+                num:6
+                on_press:root.say(self)
+            LearnBtn:
+                num:7
+                on_press:root.say(self)            
+            LearnBtn:
+                num:8
+                on_press:root.say(self)      
+
+
+
+
+
